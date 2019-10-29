@@ -1,0 +1,62 @@
+<web-app>
+    <display-name>Archetype Created Web Application</display-name>
+    <!-- spring配置文件位置-->
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath:applicationContext.xml</param-value>
+        <!-- 这个文件主要配置spring beans，包括数据源，事务控制 -->
+    </context-param>
+
+    <!-- 启动web时加载spring的配置文件 -->
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+
+    <!-- 添加springMVC支持,单独springMVC时也需要在web.xml文件中配置 -->
+    <servlet>
+        <servlet-name>appServlet</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>classpath:servlet-context.xml</param-value>
+            <!-- spring-mvc.xml 主要配置mvc方面，包括controller注解扫描，视图解析器， controller参数绑定（这里就要用到pom里的jackson json依赖） -->
+        </init-param>
+        <!-- 启动web时就加载springmvc的servlet，即启动时就加载springmvc的配置文件 -->
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <!-- 配置静态资源 -->
+    <servlet-mapping>
+        <servlet-name>appServlet</servlet-name>
+        <!-- 拦截所有请求 -->
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+
+	<!-- 这里是过滤器 -->
+	<filter>
+		<filter-name>CharacterEncodingFilter</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter
+		</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>CharacterEncodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+    <error-page> <!--当系统出现404错误，跳转到页面nopage.html-->
+        <error-code>404</error-code>
+        <location>/nopage.html</location>
+    </error-page>
+    <error-page> <!--当系统出现java.lang.NullPointerException，跳转到页面error.html-->
+        <exception-type>java.lang.NullPointerException</exception-type>
+        <location>/error.html</location>
+    </error-page>
+    <session-config><!--会话超时配置，单位分钟-->
+        <session-timeout>360</session-timeout>
+    </session-config>
+
+</web-app>

@@ -1,0 +1,704 @@
+
+/*---------------------page 1-----------------*/
+@charset "UTF-8";
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, tt, var,
+b, u, i, center,
+dl,dt,dd,ol,ul,li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin : 0;
+	padding : 0;
+	border : 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align:baseline;
+}
+
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+	display:block;
+}
+
+body{
+	line-height : 1;
+}
+
+ol, ul{
+	list-style:none;
+}
+
+blockqute, q{
+	quotes:none;
+}
+
+blockqute:before, blockquote:after,q:before, q:after{
+	content:'';
+	content:node;
+}
+
+table{
+	border-collapse:collapse;
+	border-spacing: 0;
+}
+
+input, textarea, keygen, button, select{
+	font:inherit;
+	margin:0;
+	padding:0;
+	border:0;
+	-moz-appearance:none;
+	-webkit-appearance: none;
+}
+
+select{
+ font:inherit;
+ margin:0;
+ padding:0;
+}
+
+html,
+body{
+ height:100%;
+ font-size:16px;
+ font-family:"Segoe UI","Meiryo UI", sans-serif;
+ collor:#232323;
+}
+
+B
+blockquote{
+ margin: 1em 40px;
+}
+
+p,
+pre{
+ margin:0;
+ line-height: 1.5;
+}
+
+pre{
+ word-wrap: break-word;
+}
+
+dd{
+ margin: 0;
+}
+
+nav ul,
+nav ol{
+ list-style:none;
+ list-style-image:none;
+}
+
+img {
+ -ms-interpolation-mode : bicubic;
+}
+
+legend{
+ white-space: normal;
+}
+
+input[type = "radio"]:disabled,
+input[type = "checkbox"]:disabled{
+ filter: progid:DXImageTransform.Microsoft.Alpha(enabled = false);
+ opacity:1;
+}
+
+.l-np-dialog, .l-np-sub, .l-np-login {
+	z-index: 100;
+	margin:auto;
+	position:absolute;
+	top:14%;
+	left:27%;
+}
+/*---------------------page 2————————*/
+.l-np-dialog-bk,
+.l-np-sub-bk{
+z-index:70;
+width:100%;
+height:100%;
+background-color:#000;
+opacity:7;
+position:fixed;
+overflow:hidden;
+}
+.l-np-textbox-button{
+display:table;
+table-layout:fixed;
+}
+.l-np-textbox-button-textbox{
+display:table-cell;
+vertical-align:top;
+}
+.l-np-textbox-button-button{
+display:table-cell;
+width:1.95rem;
+vertical-align:top;
+padding:3px 0px 0px 3px;
+}
+.l-np-textbox-button-button-spinner{
+display:table-cell;
+width:77px;
+vertical-align:top;
+}
+.l-np-err-input-tooltip-wrapper{
+position:absolute;
+}
+.np-text-center{
+text-align:center;
+}
+.np-text-right{
+text-align:right;
+}
+
+.np-width-fixed{
+width:280px;
+}
+.np-margin-t-05{
+margin-top:8px;
+}
+.np-margin-t-1{
+margin-top:16px;
+}
+
+.np-margin-b-1{
+margin-bottom:16px;
+}
+
+.np-margin-r-1{
+margin-right:16px;
+}
+
+.np-margin-rl-1{
+margin:0 16px;
+}
+
+.np-margin-b-2{
+margin-bottom:32px;
+}
+
+.np-margin-r-4{
+margin-right:64px;
+}
+
+.np-margin-l-1{
+margin-left:16px;
+}
+
+.np-padding-0{
+padding:0;
+}
+.np-padding-b-0{
+padding-bottom:0;
+}
+.np-padding-tb-05{
+padding:8px 0;
+}
+.np-padding-r-05{
+padding-right: 8px;
+}
+.np-padding-l-05{
+padding-left:8px;
+}
+.np-padding-rl-1{
+padding:0 16px;
+}
+/*---------------------page 3————————*/
+
+.np-padding-r-2 {
+	padding-right:32px;
+}
+
+.np-padding-t-1 {
+	padding-top:16px;
+}
+
+.np-padding-t-10px {
+	padding-top:10px;
+}
+
+.np-width-30per {
+	width:30%;
+}
+
+.np-width-80per {
+	width:80%;
+}
+
+.np-width-100per {
+	width:100%;
+}
+
+.np-height-100px {
+	height:100px;
+}
+
+.np-textbox, .np-textbox-full, .np-textarea {
+	-moz-box-sizing:border-box;
+	box-sizing:border-box;
+	background-color: #fafafa;
+	border-color:rgba(112, 112, 112, 0.66) rgba(112, 112, 112, 0.38) rgba(112, 112, 112, 0.12) rgba(112, 112, 112, 0.38);
+	border-width: 1px;
+	border-style: solid;
+	box-shadow: 0 1px 2px rgba(112, 112, 112, 0.48) inset;
+	border-radius: 0;
+}
+
+.np-textbox, .np-textbox-full{
+	heighr:2rem;
+	line-height:1.5;
+	padding: 0 8px;
+}
+
+.np-inputfile{
+	heighr:2rem;
+	line-height:1.5;
+	padding: 0;
+}
+
+.np-textbox:focus, .np-textbox-full:focus{
+	outline: none;
+}
+
+.np-textarea{
+	line-height:1.5;
+	padding:5px 9px;
+}
+
+.np-textarea:focus{
+	outline: none;
+}
+
+.np-is-textfild-readonly{
+	border-color:#D5D5D5;
+	background-color: #fafafa;
+	color:#232323;
+	box-shadow:none;
+}
+
+.np-is-textfild-disabled{
+	border-color: #D5D5D5;”:#EEE;
+	background-color:
+	color:rgba(35, 35, 35, 0.3);
+	box-shadow:none;
+}
+
+.np-title-require{
+	font-size: .75rem;
+	color : #5D5D5D;
+}
+
+.np-title-require-aster{
+	font-size: .75rem;
+	color : #E52222;
+}
+
+.np-label-ref:after{
+content:”:”;
+}
+
+.np-is-label-require:after{
+content:” *”;
+font-weight:normal;
+color:#E52222;
+}
+
+.np-link{
+line-height:1.5;
+cursor:pointer;
+color:#247abf;
+text-decoration:none;
+}
+
+.np-link:visited{
+color:#247abf;
+text-decoration:none;
+}
+.np-link:hover{
+color:#247abf;
+text-decoration:underline;
+}
+.np-link:active{
+color:#247abf;
+text-decoration:underline;
+outline:thin dotted #9C9C9C;
+}
+.np-link:focus{
+color:#247abf;
+outline:thin dotted #9C9C9C;
+}
+.np-button, .np-button-accent, .np-login-butoon, .np-button-subbutton, .np-button-small, .np-button-square, .np-button-flat,.np-calendar-button-title, .np-button-flat-w,.np-button-flat-small, .np-button-flat-w-small, .np-button-calendar,.np-button-reference,.np-button-form,.np-button-spinner-m, .np-button-spinner-p,np-pager-dropdownmenu-button, .np-dropdownmenu-button,
+.np-dropdownmenu-button-small, .np-dropmenu-button-w-small,.np-calendar-button-cell,.np-calendar-button-cell,.np-calendar-button-icon, .np-pager-button,.np-pager-button-first, .np-pager-button-first,.np-pager-button-back,.np-pager-button-next,.np-pager-button-last{
+
+	border:none;
+	display:inline-block;
+	text-align:center;
+	cursor:pointer;
+	text-decoration:none;
+	outline:none;
+	-moz-box-sizing:border-box;
+	box-sizing:border-box;
+	-webkit-tap-highlight-color:transparent;
+}
+/*---------------------page 4————————*/
+.np-button:hover,.np-button-accent:hover,.np-login-button:hover,.np-button-subbutton:hover,.np-button-small:hover,.np-button-square:hover,.np-button-flat:hover,.np-calendar-button-title:hover,.np-button-flat-w.hover,.np-button-flat-small:hover,.np-button-flat-w-small:hover,.np-button-calendar:hover,.np-button-reference:hover,.np-button-from:hover,.np-button-spinner-m:hover,.np-button-spinner-p:hover,.np-pager-dropdownmenu-button:hover,.np-dropdownmenu-button:hover,.np-dropdownmenu-button-small:hover,.np-dropdownmenu-button-w-small.hover,.np-calendar-button-cell:hover,.np-calendar-button-icon:hover,.np-pager-button:hover,.np-pager-button-first:hover,.np-pager-button-back:hover,.np-pager-button-next:hover,.np-pager-button-last:hover{
+  text-decoration:none;
+}
+
+.np-button:active,
+.np-button-accent:active，
+.np-login-button:active,
+.np-button-subbutton:active,
+.np-button-small:active,
+.np-button-square:active,
+.np-button-flat:active,
+.np-calendar-button:active,
+.np-button-flat-w:active;
+.np-button-flat-small:active,
+.np-button-flat-w-small:active,
+.np-button-calendar:active,
+.np-button-reference:active,
+.np-button-form:active,
+.np-button-spinner-m:active,
+.np-button-spinner-p:active,
+.np-pager-dropdownmenu-button:active,
+.np-dropdownmenu-button-small:active,
+.np-dropdownmenu-button-w-small:active,
+.np-calendar-button-cell:active,
+.np-calendar-button:active,
+.np-pager-button:focus,
+.np-pager-button-first:active,
+.np-pager-button-back:active,
+.np-pager-button-next:active,
+.np-pager-button-last:active{
+ text-decoration:none;
+}
+
+.np-button:focus,
+.np-button-accent:focus，
+.np-login-button:focus,
+.np-button-subbutton:focus,
+.np-button-small:focus,
+.np-button-square:focus,
+.np-button-flat:focus,
+.np-calendar-button:focus,
+.np-button-flat-w:focus;
+.np-button-flat-small:focus,
+.np-button-flat-w-small:focus,
+.np-button-calendar:focus,
+.np-button-reference:focus,
+.np-button-form:focus,
+.np-button-spinner-m:focus,
+.np-button-spinner-p:focus,
+.np-pager-dropdownmenu-button:focus,
+.np-dropdownmenu-button-small:focus,
+.np-dropdownmenu-button-w-small:focus,
+.np-calendar-button-cell:focus,
+.np-calendar-button:focus,
+.np-pager-button:focus,
+.np-pager-button-first:focus,
+.np-pager-button-back:focus,
+.np-pager-button-next:focus,
+.np-pager-button-last:focus{
+ text-decoration:none;
+background-color:#bebebe;
+}
+
+.np-button,
+.np-button-subbutton,
+.np-button-small,
+.np-button-square,
+.np-button-calendar,
+.np-button-reference,
+.np-button-form,
+.np-button-spinner-m,
+.np-button-spinner-p{
+box-shadow: 0 1px 0 0 rgba(35,35,35, 0.7);
+background-color:#5D5D5D;
+background-image:linear-gradient(to bootom, #e8ece9 0%, #b7b7b7 100%);
+color:#232323;
+}
+
+np-button:hover,
+.np-button-subbutton:hover,
+.np-button-small:hover,
+.np-button-square:hover,
+.np-button-calendar:hover,
+.np-button-reference:hover,
+.np-button-form:hover,
+.np-button-spinner-m:hover,
+.np-button-spinner-p:hover,
+.np-button:focus,
+.np-button-subbutton:focus,
+.np-button-small:focus,
+.np-button-square:focus,
+.np-button-calendar:focus,
+.np-button-reference:focus,
+.np-button-form:focus,
+.np-button-spinner-m:focus,
+.np-button-spinner-p:focus{
+background-image:linear-gradient(to bootom, #e8ece9 0%, #dcdcdc 100%);
+}
+
+.np-button:active,
+.np-button-subbutton:active,
+.np-button-small:active,
+.np-button-square:active,
+.np-button-calendar:active,
+.np-button-reference:active,
+.np-button-form:active,
+.np-button-spinner-m:active,
+.np-button-spinner-p:active{
+background-image:linear-gradient(to bootom, #f5f5f5 0%, #dcdcdc 100%);
+}
+
+.np-is-button-disabled.np-button,
+.np-is-button-disabled.np-button-subbutton,
+.np-is-button-disabled.np-button-small,
+.np-is-button-disabled.np-button-square,
+.np-is-button-disabled.np-button-calendar,
+.np-is-button-disabled.np-button-reference,
+.np-is-button-disabled.np-button-form,
+.np-is-button-disabled.np-button-spinner-m,
+.np-is-button-disabled.np-button-spinner-p{
+box-shadow:0 1px 0 0 rgba(35,35,35, 0.4),
+background:#D5D5D5;
+opacity: .3;
+cursor:default;
+}
+
+.np-button-accent, 
+.np-login-button{
+box-shadow: :0 1px 0 0 rgba(35,35,35, 0.7),
+background-image:linear-gradient(to bootom, #3b73b7 0%, #264584 100%);
+}
+
+.np-button-accent:hover, 
+.np-login-button:hover,
+.np-button-accent:focus,
+.np-login-button:focus,{
+background-image:linear-gradient(to bootom, #00bfff 0%, #1e90fff 100%);
+}
+
+.np-button-accent:active, 
+.np-login-button:active{
+background-image:linear-gradient(to bootom, #87cefa 0%, #000fff 100%);
+}
+
+.np-is-button-disabled.np-button-accent,
+.np-is-button-disabled.np-login-button{
+box-shadow: :0 1px 0 0 rgba(35,35,35, 0.4),
+background:#74A7E0;
+opacity: .8;
+cursor:default;
+}
+
+.np-button-flat,
+.np-calendar-button-title,
+.np-button-flat-small,
+.np-pager-dropdownmenu-button,
+.np-dropdownmenu-button,
+.np-dropdownmenu-button-small,
+.np-calendar-button-cell,
+.np-calendar-button-icon,
+.np-pager-button,
+.np-pager-button-first,
+.np-pager-button-back,
+.np-pager-button-next,
+.np-pager-button-last{
+  color:#232323;
+  background-color:transparent;
+}
+
+.np-button-flat:hover,
+.np-calendar-button-title:hover,
+.np-button-flat-small:hover,
+.np-pager-dropdownmenu-button:hover,
+.np-dropdownmenu-button:hover,
+.np-dropdownmenu-button-small:hover,
+.np-calendar-button-cell:hover,
+.np-calendar-button-icon:hover,
+.np-pager-button:hover,
+.np-pager-button-first:hover,
+.np-pager-button-back:hover,
+.np-pager-button-next:hover,
+.np-pager-button-last:hover,
+.np-button-flat:focus,
+.np-calendar-button-title:focus,
+.np-button-flat-small:focus,
+.np-pager-dropdownmenu-button:focus,
+.np-dropdownmenu-button:focus,
+.np-dropdownmenu-button-small:focus,
+.np-calendar-button-cell:focus,
+.np-calendar-button-icon:focus,
+.np-pager-button:focus,
+.np-pager-button-first:focus,
+.np-pager-button-back:focus,
+.np-pager-button-next:focus,
+.np-pager-button-last:focus{
+ background-color:rgba(112,112,112,0.2);
+}
+
+.np-button-flat:active,
+.np-calendar-button-title:active,
+.np-button-flat-small:active,
+.np-pager-dropdownmenu-button:active,
+.np-dropdownmenu-button:active,
+.np-dropdownmenu-button-small:active,
+.np-calendar-button-cell:active,
+.np-calendar-button-icon:active,
+.np-pager-button:active,
+.np-pager-button-first:active,
+.np-pager-button-back:active,
+.np-pager-button-next:active,
+.np-pager-button-last:active{
+ background-color:rgba(112,112,112,0.4);
+}
+
+.np-is-button-disabled.np-button-flat,
+.np-is-button-disabled.np-calendar-button-title,
+.np-is-button-disabled.np-button-flat-small,
+.np-is-button-disabled.np-pagger-dropdownmenu-button,
+.np-is-button-disabled.np-dropdownmenu-button,
+.np-is-button-disabled.np-dropdownmenu-button-small,
+.np-is-button-disabled.np-calendar-button-cell,
+.np-is-button-disabled.np-calendar-button-icon,
+.np-is-button-disabled.np-pagger-button,
+.np-is-button-disabled.np-pagger-button-firsr,
+.np-is-button-disabled.np-pagger-button-back,
+.np-is-button-disabled.np-pagger-button-next,
+.np-is-button-disabled.np-pagger-button-last{
+ background-color:transparent;
+ opacity: .3;
+ cursor:default;
+}
+
+/*---------------------page 5————————*/
+/*---------------------page 6————————*/
+.np-button-subbutton, .np-button-small{
+	border-radius:5px;
+}
+/*---------------------page 7————————*/
+.np-radio:focus,.np-checkbox:focus{
+	outline:thin dotted #9C9C9C;
+}
+
+.np-radio{
+	border-radius:9999px;
+}
+/*---------------------page 8————————*/
+
+/*---------------------page 9————————*/
+.l-np-base{
+	background-color:#F1F0EF;
+}
+
+.l-np-system{
+	background:#5D91CF;
+	color:#fff;
+	height:2.5rem;
+	padding:0 16px;
+	position: relative;
+	z-index:50;
+	box-shadow: 0 0 0.25rem 0 rgba(35, 35, 35, 0.45);
+	min-width:1024px;
+	-moz-box-sizing:border-box;
+}
+
+.l-np-system-title{
+	max-width:450px;
+	display:block;
+	float:left;
+}
+.l-np-system-right{
+	float:right;
+}
+.l-np-system-menu{
+	max-left:.625rem;
+	display:inline-block;
+}
+/*---------------------page 10————————*/
+
+
+
+
+/*---------------------page 11————————*/
+.l-np-section{
+	padding: 4px 0px 4px;
+}
+.l-np-section-header{
+	border-bottom: 1px solid #B7B7B7;
+	width:100%;
+	padding-bottom:8px;
+	position:relative;
+	display:inline-table;
+	margin-bottom:8px;
+}
+.l-np-section-header-left{
+	display:table-cell;
+	padding-top:8px;
+}
+.l-np-form-cell-label{
+	-moz-box-sizing:border-box;
+	box-sizing:border-box;
+	background-color:#D5D5D5;
+	padding: 2px 8px;
+	border-collapse:collapse;
+	border-bottom:1px solid #fff;
+	width:150px;
+	text-align:left;
+	vertical-align:middle;
+	display:table-cell;
+}
+
+/*---------------------page 12————————*/
+/*---------------------page 13————————*/
+.l-np-sub{
+	min-width:650px;
+	width:650px;
+	height:auto;
+	background-color:#FFF;
+}
+.l-np-sub-footer{
+	border-top:1px soild #B7B7B7;
+	padding: 8px 0 14px;
+	margin:0 16px;
+	background-color:#FFF;
+}
+.l-np-sub-footer-subbutton{
+	display:inline-block;
+}
+
+/*---------------------page 14————————*/
+/*---------------------page 15————————*/
+/*---------------------page 16————————*/
+/*---------------------page 17————————*/
+.np-table-show th, .np-table-input th{
+	background:#D5D5D5;
+	border-left:1px soild #FFF;
+	border-top:1px soild #FFF;
+	border-right:1px soild #FFF;
+	text-right:center;
+} 
+
+.np-table-header,
+.np-table-footer{
+	background:#f4f4f4;
+	padding:2px 8px;
+	white-space:nowrap;
+	height:2.375rem;
+	line-height:2.375rem;
+	-moz-box-sizing:center-box;
+	box-sizing:center-box;
+	position:relative;
+}
+/*---------------------page 18————————*/
+/*---------------------page 19————————*/

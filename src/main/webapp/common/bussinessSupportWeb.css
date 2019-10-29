@@ -1,0 +1,181 @@
+@chartset "UTF-8";
+
+.menu_include {
+	position:absolute;
+	top:20px;
+	width:100%;
+	height:200px;
+	overflow:hidden;
+}
+
+#menu{
+	position:relative;
+      top:0px;
+      left:0px;
+      width:100%;
+      height:100%;
+      padding:0 0 0 0;
+}
+
+#menu ul{
+     display:block;
+     list-style-type:none;
+     margin:0;
+     padding:0;
+}
+
+#menu ul ul {
+    display:none;
+    position:absolute;
+    top:100%;
+    left:0;
+     z-index:10000;
+}
+
+#menu ul ul.menu_ul_right{
+    display:none;
+    position:absolute;
+    top:100%;
+    left:auto;
+    right:0;
+    z-index:10000;
+}
+
+#menu ul ul ul {
+    top:0;
+    left:100%;
+    z-index:10000;
+}
+
+#menu ul ul.menu_ul_right ul{
+    left:auto;
+    top:0;
+    right:100%;
+    z-index:10000;
+}
+
+#menu li {
+    float:left;
+}
+
+#menu li li{
+    clear:both;
+}
+
+#menu li:hover{
+    position:relative;
+}
+
+#menu li:hover > ul{
+    display:block;
+}
+
+#menu li{
+    width:9.09%;
+    line-height:1.4em;
+    text-align:center;
+    font-family:”Segoe UI”,”Meiryo UI”,sans-serif;
+    font-size:12pt;
+    color:#000;
+    background:#5D91CF;
+    white-space:nowrap;
+}
+
+#menu li li{
+    line-height:1.8em;
+    text-align:left;
+    min-width:18rem;
+    white-space:nowrap;
+}
+
+#menu li a {
+    display:block;
+    text-decoration: none;
+    padding: 0 5px;
+    background-color:#5D91CF;
+    border: 1px solid #3B73B7;
+    border-top:1px solid #74A7E0;
+    border-left:1px solid #74A7E0;
+    color:#FFF;
+}
+
+#menu a:hover{
+    color:#FFF;
+    background: #264584;
+    border: 1px solid #5D91CF;
+    border-top:1px solid #C3DBF1;
+    border-left:1px solid #C3DBF1;
+}
+
+.footer_include{
+    position:relative;
+    padding: 0px;
+    width: 100%;
+    height: 25px;
+}
+
+.positionString{
+    padding:0px 0px 0px 5px;
+    height:24px;
+}
+
+#footer .messageNone{
+     background:#ddd;
+}
+
+#footer .messageInfo{
+   background:#C3DBF1;
+   border-color:#000000;
+   color:#000000;
+}
+
+#footer .messageWarn{
+   background:#FEFBD2;
+   border-color:#000000;
+   color:#000000;
+}
+#footer .messageError{
+   background:#FEF0F0;
+   border-color:#C71919;
+   color:#C71919;
+}
+#footer .footerTable{
+   width: 100%;
+   border-style:solid;
+   border-width:1px;
+   border-collapse:collapse;
+   font-family:”Segoe UI”,”Meiryo UI”,sans-serif;
+   font-size:13.5pt;
+}
+
+#footer .messageCode, #footer .time{
+   width:10%;
+}
+
+#footer .messageDisplayArea{
+   width:80%;
+   border-color: #777;
+   border-style: none solid;
+   border-width:1px;
+}
+
+.l-contents{
+    position:absolute;
+    top:20px;
+    left:0px;
+    min-width:1024px;
+    width: 100%;
+    margin:0px 0px 0px 0px;
+}
+
+.l-content-panel{
+    position:relative;
+    box-shadow:0 0 6px 0 rgba(35, 35, 35, 0.6);
+    background:#FFF;
+    margin:0px;
+    padding:0px 10px 0px 10px;
+}
+
+.l-world-break-all{
+    world-break:break-all;
+}
