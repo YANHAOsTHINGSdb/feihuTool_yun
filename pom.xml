@@ -1,12 +1,13 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>yan.studio</groupId>
-  <artifactId>feihuTool</artifactId>
-  <packaging>war</packaging>
-  <version>0.0.1-SNAPSHOT</version>
-  <name>feihuTool Maven Webapp</name>
-  <url>http://maven.apache.org</url>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>yan.studio</groupId>
+	<artifactId>feihuTool</artifactId>
+	<packaging>war</packaging>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>feihuTool Maven Webapp</name>
+	<url>http://maven.apache.org</url>
 
 	<properties>
 		<org.springframework.version>4.3.7.RELEASE</org.springframework.version>
@@ -55,8 +56,7 @@
 		</dependency>
 		<!-- Various Application Context utilities, including EhCache, JavaMail,
 			Quartz, and Freemarker integration Define this if you need any of these integrations
-			spring版本升级到了4 否则就会报ClassNotFoundException 2019-10-18
-			-->
+			spring版本升级到了4 否则就会报ClassNotFoundException 2019-10-18 -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context-support</artifactId>
@@ -152,16 +152,16 @@
 		<!-- commons-lang -->
 		<!-- 用于字符串操作 -->
 		<dependency>
-		    <groupId>org.apache.commons</groupId>
-		    <artifactId>commons-lang3</artifactId>
-		    <version>3.8</version>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.8</version>
 		</dependency>
 
 		<!-- 用于文件操作 -->
 		<dependency>
-		    <groupId>commons-io</groupId>
-		    <artifactId>commons-io</artifactId>
-		    <version>2.6</version>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.6</version>
 		</dependency>
 
 		<!-- hibernate -->
@@ -283,17 +283,22 @@
 			<version>2.5.1</version>
 		</dependency>
 		<!-- 连接池包 -->
-		<dependency>
-			<groupId>c3p0</groupId>
-			<artifactId>c3p0</artifactId>
-			<version>0.9.1.2</version>
-		</dependency>
+		<!-- <dependency> <groupId>c3p0</groupId> <artifactId>c3p0</artifactId>
+			<version>0.9.1.2</version> </dependency> -->
 		<!-- 迁就一下DLL -->
 		<dependency>
-		    <groupId>com.sun.jna</groupId>
-		    <artifactId>jna</artifactId>
-		    <version>4.2.1</version>
+			<groupId>com.sun.jna</groupId>
+			<artifactId>jna</artifactId>
+			<version>4.2.1</version>
 		</dependency>
+
+		<!-- 百度网盘关联jar -->
+		<dependency>
+			<groupId>com.squareup.okhttp3</groupId>
+			<artifactId>okhttp</artifactId>
+			<version>3.3.0</version>
+		</dependency>
+
 	</dependencies>
 	<build>
 		<plugins>
@@ -318,9 +323,8 @@
 				<configuration>
 					<source>1.7</source>
 					<target>1.7</target>
-<!-- 					<compilerArgument>-Xlint:all</compilerArgument>
-					<showWarnings>true</showWarnings>
-					<showDeprecation>true</showDeprecation> -->
+					<!-- <compilerArgument>-Xlint:all</compilerArgument> <showWarnings>true</showWarnings>
+						<showDeprecation>true</showDeprecation> -->
 				</configuration>
 			</plugin>
 			<plugin>

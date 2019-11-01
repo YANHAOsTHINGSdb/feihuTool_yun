@@ -8,6 +8,8 @@ import java.io.OutputStream;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class 爸爸Controller {
 
 	public 爸爸Controller() {
@@ -15,6 +17,10 @@ public class 爸爸Controller {
 	}
 
 	public void 将指定文件提供下载_byHttpServletResponse_文件全路径(HttpServletResponse response, String s文件全路径) {
+		//  如果【s文件全路径】为空、则取消下载
+		if(StringUtils.isEmpty(s文件全路径)) {
+			return;
+		}
 	    //设置响应头和客户端保存文件名
 	    response.setCharacterEncoding("utf-8");
 	    response.setContentType("multipart/form-data");
