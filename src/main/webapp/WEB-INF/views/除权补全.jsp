@@ -13,6 +13,8 @@
 
 <script type="text/javascript" src="js/jquery-ui.js"></script>
 <script type="text/javascript" src="js/jquery-ui.min.js"></script>
+<script type="text/javascript" src="js/jquery-1.6.2.min.js"></script>
+<script type="text/javascript" src="js/jquery.cookie.js"></script>
 
 <script type="text/javascript" src="js/tabulator.min.js"></script>
 <script type="text/javascript" src="js/tabulator.js"></script>
@@ -21,12 +23,65 @@
 </head>
 <body>
 	<script>
+
 		$(function() {
 			$("#chuquan_download_btn").click(function() {
 			    $("#fbean").attr("action","chuquan_download");
 			    $("#fbean").submit();
 			});
 		});
+
+		<%-- 追加按钮 按下--%>
+		function click_BaiduLogin(){
+
+			// 打开子画面
+			$.ajax({
+				// 使用Httpclient来替代客户端的jsonp跨域解决方案 https://www.cnblogs.com/digdeep/p/4198643.html
+				// http://www.baidu.com/cache/user/html/login-1.2.html
+				// https://passport.baidu.com/v2/?login&Type=1&tpl=netdisk
+				// https://wappass.baidu.com/cgi-bin/genimage?tcG4a345670d4ed560a024d1544a901cc13239f973474012d7b
+				url		: "http://localhost:8080/feihuTool/baiduLogin"),
+
+				// serialize()=输出序列化表单值的结果、参照https://www.w3school.com.cn/jquery/ajax_serialize.asp
+				type    :'get',
+				dataType:'html',
+				success : function(data){
+						// 显示子画面：将取到的画面html值放入subPage中
+						$('#subPage').html(data);
+				}, // success完结
+				complete:function(){
+					isSubmitted = false;
+				}
+
+			});
+		}
+		// 取得Cookie的值
+		function getCookie(c_name){
+			if (document.cookie.length>0){//判断cookie是否存在
+				//获取cookie名称加=的索引值
+				var c_start = document.cookie.indexOf(c_name + "=");
+				if (c_start!=-1){ //说明这个cookie存在
+					//获取cookie名称对应值的开始索引值
+					c_start=c_start + c_name.length+1
+					//从c_start位置开始找第一个分号的索引值，也就是cookie名称对应值的结束索引值
+					c_end=document.cookie.indexOf(";",c_start)  
+					//如果找不到，说明是cookie名称对应值的结束索引值就是cookie的长度
+					if (c_end==-1) c_end=document.cookie.length
+					//unescape() 函数可对通过 escape() 编码的字符串进行解码
+					//获取cookie名称对应的值，并返回
+					return unescape(document.cookie.substring(c_start,c_end))
+				}
+			}
+			return "" //不存在返回空字符串
+		}
+
+		//
+		function getBDUSS() {
+			var iframe = document.getElementById("iframe_baidu");
+
+			//var str ="<input type='text' value=' " +getCookie('BDUSS')+"'/>";
+			//document.getElementById("BDUSS").innerHTML=str;
+		}
 	</script>
 	<div id="wrapper">
 		<header id="header">
@@ -67,6 +122,17 @@
 				<div id="content">
 					<h2 style="display: none;">Content</h2>
 					<h3 id="Tomcat_9_Software_Downloads">除权补全</h3>
+					<div>
+						<button type="button" onclick="click_BaiduLogin()">登陆百度网盘</button>
+						<!-- 如何将一个网页的一部分嵌入到自己的网页中 https://zhidao.baidu.com/question/1051062419381258939.html -->
+						<!-- https://passport.baidu.com/v2/?reg&u=https%3A%2F%2Fpan.baidu.com&#174;Type=1&tpl=netdisk -->
+						<iframe id="iframe_baidu" src="http://localhost:8080/feihuTool_Tomcat/baiduLogin_request" width="580px"  height="580px"></iframe>
+						<br>
+						BDUSS = <div id="BDUSS">
+						<br>
+						<input type="button" id="取得BDUSS" value="取得BDUSS" onClick="getBDUSS();">
+					</div>
+					</div>
 					<div class="text">
 						<p>处理流程：先从通达信券商服务器下载最后交易日的全部有效证券代码、
 							再根据代码下载每只股票的历史除权数据，之后将下载数据出力到文件和数据库进行备份 最后，最后将数据做成飞狐导入用下载文件。</p>
@@ -76,6 +142,8 @@
 				</div>
 			</div>
 		</div>
+		<!-- 这里是子画面-->
+		<div id="subPage"></div>
 		<form id ="fbean" name="fbean" method="post">
 		</form>
 		</main>

@@ -1,16 +1,14 @@
 package server.service;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import ConvertTool.impl.StockData除权ConvertTool;
 import server.dao.除权信息Dao;
 import server.entity.除权Entity;
-import server.pcs.PCSUploadUtils;
 
 @Service
 // @Transactional
@@ -34,33 +32,23 @@ public class 除权数据Service  extends 爸爸数据Service{
 	 */
 	public String 下载除权导入数据() {
 
-		String[] s财务原始文件全路径 = new String[1];
-		s财务原始文件全路径[0]="/Users/haoyan/Desktop/FeihuTool_Convert/除权数据.data";
+		String[] s除权原始文件全路径 = new String[1];
+		s除权原始文件全路径[0]="/Users/haoyan/Desktop/FeihuTool_Convert/除权数据.data";
 
-		String s财务导出文件全路径 = null;
-//
-//		s财务导出文件全路径 = new StockData除权ConvertTool().输出到除权文件(s财务原始文件全路径);
-//
-//		if(StringUtils.isEmpty(s财务导出文件全路径)) {
-//			return s财务导出文件全路径;
-//		}
+		String s除权导出文件全路径 = null;
+		s除权导出文件全路径 = new StockData除权ConvertTool().输出到除权文件(s除权原始文件全路径);
+
+		if(StringUtils.isEmpty(s除权导出文件全路径)) {
+			return s除权导出文件全路径;
+		}
 
 		// 存储除权数据（解析原始文件、存入百度网盘）
+		String s本地上传文件全路径 = s除权原始文件全路径[0];
+		String s网盘存储文件全路径 = "/apps/除权数据" + 取得系统时间_文件名() +".data";
+		存储到百度网盘(s本地上传文件全路径, s本地上传文件全路径);
 
-		// 取得系统时间
-		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
-		System.out.println(df.format(new Date()));// new Date()为获取当前系统时间
-
-//        String mLocalPath = "/Users/haoyan/Desktop/FeihuTool_Convert/除权数据.data";
-//        String mDestPath = "/apps/除权数据.data";
-		String mLocalPath = s财务原始文件全路径[0];
-		String mDestPath = "/apps/除权数据" + df.format(new Date()) +".data";
-
-		new PCSUploadUtils().multiFileUpload(mLocalPath, mDestPath);
-
-		return s财务导出文件全路径;
+		return s除权导出文件全路径;
 	}
-
 
 
 	/**

@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+import server.pcs.bean.BaiduDto;
+
 
 
 /**
@@ -48,7 +50,7 @@ public class ConfigLoader {
 
 	public static BaiduDto 加载百度Pcs登陆Info() throws IOException{
 		Properties properties = new Properties();
-		InputStream in = new FileInputStream("PcsLogin.txt");
+		InputStream in = new FileInputStream("/Applications/Eclipse_2018-09.app/Contents/workspace/feihuTool_yun/PcsLogin.txt");
 		properties.load(in);
 		BaiduDto baiduDto = new BaiduDto();
 		baiduDto.setBduss(properties.getProperty("bduss"));
