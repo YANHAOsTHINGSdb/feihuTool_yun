@@ -1,6 +1,7 @@
 package server.controller;
 
 import java.io.IOException;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -12,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import server.pcs.BaiduHttpService百度服务器登陆服务;
 import server.pcs.bean.BaiduLoginRes百度登陆请求Bean;
-import server.service.百度登陆Service;
 
 @Controller
 public class 百度登陆Controller extends HttpServlet{
@@ -74,9 +75,37 @@ public class 百度登陆Controller extends HttpServlet{
     	String vcodestr = r.getParameter("vcodestr");
 
     	// 调用 百度登陆service.百度登陆请求（username, password, verifycode, vcodestr）
-    	百度登陆Service 百度登陆service = new 百度登陆Service();
-    	return 百度登陆service.百度登陆请求(username, password, verifycode, vcodestr);
+    	return new BaiduHttpService百度服务器登陆服务(verifycode, vcodestr).登陆百度网盘_byUserName_passwd(username, password);
 
     	// return;
+    }
+
+    @RequestMapping(value = "sendcode", method = RequestMethod.POST)
+    @ResponseBody //将返回结果转成Json
+    protected Map sendcode(HttpServletResponse p, HttpServletRequest r){
+
+    	String type = r.getParameter("type");
+    	// 设置 密码
+    	String token = r.getParameter("token");
+
+		return new BaiduHttpService百度服务器登陆服务().申请百度发送验证码到手机或邮箱(type, token);
+
+    }
+
+    @RequestMapping(value = "verifylogin", method = RequestMethod.POST)
+    @ResponseBody //将返回结果转成Json
+    protected Map verifylogin(HttpServletResponse p, HttpServletRequest r){
+    	// vcode, token, u, verifyType, "jsonp1"
+
+    	String vcode = r.getParameter("vcode");
+    	// 设置 密码
+    	String token = r.getParameter("token");
+
+    	String u = r.getParameter("u");
+
+    	String verifyType = r.getParameter("verifyType");
+
+		return new BaiduHttpService百度服务器登陆服务().发送从手机或邮箱取到的验证码(vcode, token, u, verifyType);
+
     }
 }

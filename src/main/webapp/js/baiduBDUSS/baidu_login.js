@@ -11,7 +11,7 @@ function baidu_login() {
 
     $.ajax({
         type: 'post',
-        url: "http://localhost:8080/feihuTool/baiduLogin",
+        url: "/feihuTool/baiduLogin",
         data: formParam,
         dataType: 'json',
         error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -19,7 +19,7 @@ function baidu_login() {
             $("#login-submit").attr("disabled", false);
         },
         success: function(data) {
-            switch (data.errInfo.no) {
+            switch (data.errCode) {
                 case "0":
                     $("#login-verifyWrapper").css("display", "none"); // 隐藏验证码输入框
                     $("#succeed-div").css("display", ""); // 显示登录成功窗口
@@ -29,8 +29,8 @@ function baidu_login() {
                 case "400101": // 开启登录保护
                 case "400023": // 需要验证手机或邮箱
                     $("#login-verify").css("display", "");
-                    $("#my-phone").html(data.phone);
-                    $("#my-email").html(data.email);
+                    $("#my-phone").html(data.checkPhone);
+                    $("#my-email").html(data.checkEmail);
                     $("#token").val(data.token);
                     $("#u").val(data.u);
                     $("#login-verifyWrapper").css("display", "none");
@@ -43,7 +43,7 @@ function baidu_login() {
                     $("#login-verifyCodeImg").attr("src", "https://wappass.baidu.com/cgi-bin/genimage?" + data.codeString);
                     break;
                 default:
-                    alert("ErrorCode:" + data.errInfo.no + ",ErrorMsg:" + data.errInfo);
+                    alert("ErrorCode:" + data.errCode + ",ErrorMsg:" + data.errMsg);
                     break;
             }
             reborn('login-submit');
@@ -60,7 +60,7 @@ function sendType(type) {
 
     $.ajax({
         type: 'post',
-        url: "/cgi-bin/baidu/sendcode",
+        url: "/feihuTool/sendcode",
         data: {
             type: type,
             token: token,
@@ -91,14 +91,14 @@ function verify_login() {
 
     $.ajax({
         type: 'post',
-        url: "/cgi-bin/baidu/verifylogin",
+        url: "/feihuTool/verifylogin",
         data: formParam,
         dataType: 'json',
         error: function(XMLHttpRequest, textStatus, errorThrown) {
             alert("发送错误: " + XMLHttpRequest.status);
         },
         success: function(data) {
-            switch (data.errInfo.no) {
+            switch (data.errCode) {
                 case "0":
                     $("#login-verify").css("display", "none");
                     $("#verifycode-wrapper").css("display", "none");
@@ -110,7 +110,7 @@ function verify_login() {
                     }
                     break;
                 default:
-                    $("#code-error").html("ErrorCode: " + data.errInfo.no + ", ErrorMsg: " + data.errInfo.msg);
+                    $("#code-error").html("ErrorCode: " + data.errCode + ", ErrorMsg: " + data.errMsg);
                     break;
             }
         },

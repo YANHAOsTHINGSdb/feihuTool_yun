@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import com.alibaba.fastjson.JSONObject;
@@ -226,11 +227,14 @@ public class BaiduHttpService百度服务器登陆服务 {
 		baiduLoginRes.setCheckEmail(matchList_邮箱.get(0));
 
 		// 取得最新token
+		// "token=(.*?)&u=(.*?)&secstate="
 		ArrayList<String> matchList_TokenAndU =  StringUtil.解析指定️字符串_by正则表达式(gotoUrl,
 				"token=(.*?)&u=(.*?)&secstate=");
-		baiduLoginRes.setToken(matchList_TokenAndU.get(0));
+		String a[] = matchList_TokenAndU.get(0).split("&");
+		Map<String, String> rawTokenAndUMap = StringUtil.将ArrayStr转成Map(a, "=");
+		baiduLoginRes.setToken(rawTokenAndUMap.get("token"));
 		// 取得最新U
-		baiduLoginRes.setU(matchList_TokenAndU.get(1));
+		baiduLoginRes.setU(rawTokenAndUMap.get("u"));
 	}
 
 	public BaiduDto 登陆百度网盘() {
@@ -322,6 +326,170 @@ public class BaiduHttpService百度服务器登陆服务 {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public Map<String, String> 申请百度发送验证码到手机或邮箱(String type, String token) {
+		/**
+			url := fmt.Sprintf("https://wappass.baidu.com/passport/authwidget?action=send&tpl=&type=%s&token=%s&from=&skin=&clientfrom=&adapter=2&updatessn=&bindToSmsLogin=&upsms=&finance=", verifyType, token)
+			body, err := bc.Fetch("GET", url, nil, nil)
+			if err != nil {
+				return err.Error()
+			}
+
+			rawMsg := regexp.MustCompile(`<p class="mod-tipinfo-subtitle">\s+(.*?)\s+</p>`).FindSubmatch(body)
+			if len(rawMsg) >= 1 {
+				return string(rawMsg[1])
+			}
+
+			return "未知消息"
+		 */
+		//String.format("this is a %2$s %1$s %s %s test", "java", "C++");
+		String url = String.format("https://wappass.baidu.com/passport/authwidget?action=send&tpl=&type=%s&token=%s&from=&skin=&clientfrom=&adapter=2&updatessn=&bindToSmsLogin=&upsms=&finance=",type ,token);
+
+		// 向百度服务器取得验证相关信息（电话或邮箱）。
+		String okHttpRes = null;
+		try {
+			okHttpRes = OkHttpUtil_HTTP客户端工具.getInstance().doGetWithJsonResult(url);
+		} catch (IOException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		}
+
+		ArrayList<String> rawMsg =  StringUtil.解析指定️字符串_by正则表达式(okHttpRes,
+				"<p class=\"mod-tipinfo-subtitle\">\\s+(.*?)\\s+</p>");
+
+		Map<String, String> msgMap = new HashMap<String, String>();
+		if( !CollectionUtils.isEmpty(rawMsg)) {
+			msgMap.put("msg", rawMsg.get(0));
+		}else {
+			msgMap.put("msg", "未知消息");
+			msgMap.put("error", "未知消息");
+		}
+		return msgMap;
+	}
+
+	public Map 发送从手机或邮箱取到的验证码(String vcode, String token, String u, String verifyType) {
+		/**
+			// VerifyCode 输入 手机/邮箱 收到的验证码, 验证登录
+			func (bc *BaiduClient) VerifyCode(verifyType, token, vcode, u string) (lj *LoginJSON) {
+				lj = &LoginJSON{}
+				header := map[string]string{
+					"Connection":                "keep-alive",
+					"Host":                      "wappass.baidu.com",
+					"Pragma":                    "no-cache",
+					"Upgrade-Insecure-Requests": "1",
+				}
+
+				timestampStr := strconv.FormatInt(time.Now().Unix(), 10) + "773_357" + "994"
+				url := fmt.Sprintf("https://wappass.baidu.com/passport/authwidget?v="+timestampStr+"&vcode=%s&token=%s&u=%s&action=check&type=%s&tpl=&skin=&clientfrom=&adapter=2&updatessn=&bindToSmsLogin=&isnew=&card_no=&finance=&callback=%s", vcode, token, u, verifyType, "jsonp1")
+				body, err := bc.Fetch("GET", url, nil, header)
+				if err != nil {
+					lj.ErrInfo.No = "-2"
+					lj.ErrInfo.Msg = "网络请求错误: " + err.Error()
+					return
+				}
+
+				// 去除 body 的 callback 嵌套 "jsonp1(...)"
+				body = bytes.TrimPrefix(body, []byte("jsonp1("))
+				body = bytes.TrimSuffix(body, []byte(")"))
+
+				// 如果 json 解析出错, 直接输出错误信息
+				if err := jsoniter.Unmarshal(body, &lj); err != nil {
+					lj.ErrInfo.No = "-2"
+					lj.ErrInfo.Msg = "提交手机/邮箱验证码错误: " + err.Error()
+					return
+				}
+
+				// 最后一步要访问的 URL
+				u = fmt.Sprintf("%s&authsid=%s&fromtype=%s&bindToSmsLogin=", u, lj.Data.AuthSID, verifyType) // url
+
+				_, err = bc.Fetch("GET", u, nil, nil)
+				if err != nil {
+					lj.ErrInfo.No = "-2"
+					lj.ErrInfo.Msg = "提交手机/邮箱验证码错误: " + err.Error()
+					return
+				}
+
+				lj.parseCookies(u, bc.Jar.(*cookiejar.Jar))
+				return lj
+			}
+		 */
+		/*
+		 * 准备headers信息
+		 */
+		Headers headers = new Headers.Builder()
+				.add("Connection", "keep-alive")
+				.add("Host", "wappass.baidu.com")
+				.add("Pragma", "no-cache")
+				.add("Upgrade-Insecure-Requests", "1")
+				.build();
+		String timestampStr = System.currentTimeMillis() / 1000 + "773_357" + "994";
+		String url = String.format("https://wappass.baidu.com/passport/authwidget?v="+timestampStr+"&vcode=%s&token=%s&u=%s&action=check&type=%s&tpl=&skin=&clientfrom=&adapter=2&updatessn=&bindToSmsLogin=&isnew=&card_no=&finance=&callback=%s", vcode, token, u, verifyType, "jsonp1");
+		// 向百度服务器发送Get请求
+		String okHttpRes = null;
+		try {
+			okHttpRes = OkHttpUtil_HTTP客户端工具.getInstance().doGetWithJsonResult(url, headers);
+		} catch (IOException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		}
+
+		// 去除 body 的 callback 嵌套 "jsonp1(...)"
+		okHttpRes.replaceAll(okHttpRes, "jsonp1(");
+		okHttpRes.replaceAll(okHttpRes, ")");
+
+		// 如果 json 解析出错, 直接输出错误信息
+		JSONObject json = JSONObject.parseObject(okHttpRes);
+
+		// 最后一步要访问的 URL
+		String finalurl = String.format("%s&authsid=%s&fromtype=%s&bindToSmsLogin=", u, json.get("authsid"), verifyType); // url
+		// 向百度服务器请求
+		String okHttpRes2 = null;
+		try {
+			okHttpRes2 = OkHttpUtil_HTTP客户端工具.getInstance().doGetWithJsonResult(finalurl);
+		} catch (IOException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		}
+
+		parseCookies(u, okHttpRes2);
+
+		return null;
+	}
+
+	private void parseCookies(String targetURL, String okHttpRes2) {
+		/**
+			func (lj *LoginJSON) parseCookies(targetURL string, jar *cookiejar.Jar) {
+				url, _ := url.Parse(targetURL)
+				cookies := jar.Cookies(url)
+				for _, cookie := range cookies {
+					switch cookie.Name {
+					case "BDUSS":
+						lj.Data.BDUSS = cookie.Value
+					case "PTOKEN":
+						lj.Data.PToken = cookie.Value
+					case "STOKEN":
+						lj.Data.SToken = cookie.Value
+					}
+				}
+				lj.Data.CookieString = pcsutil.GetURLCookieString(targetURL, jar) // 插入 cookie 字串
+			}
+		 */
+		List<Cookie> cookies = OkHttpUtil_HTTP客户端工具.getCookie(HttpUrl.parse(targetURL));
+		BaiduDto baiduDtoBranch = new BaiduDto();
+		for (int i = 0; i < cookies.size(); i++) {
+			Cookie cookie = cookies.get(i);
+			if (cookie.name().equals("BDUSS")) {
+				baiduDtoBranch.setBduss(cookie.value());
+			}
+			if (cookie.name().equals("PTOKEN")) {
+				baiduDtoBranch.setPtoken(cookie.value());
+			}
+			if (cookie.name().equals("STOKEN")) {
+				baiduDtoBranch.setStoken(cookie.value());
+			}
+		}
+
 	}
 
 	/**

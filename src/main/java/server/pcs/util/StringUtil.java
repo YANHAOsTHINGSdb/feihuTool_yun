@@ -2,11 +2,15 @@ package server.pcs.util;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.apache.commons.lang3.StringUtils;
 
 public class StringUtil {
 	private static final String FOLDER_SEPARATOR = "/";
@@ -204,6 +208,32 @@ public class StringUtil {
 	        matchList.add(matcher.group());
 	      }
 		return matchList;
+	}
+
+	public static Map<String, String> 将ArrayStr转成Map(String[] a, String string) {
+		/**
+			将以下类型的数组转成Map
+			[token=39aa2r, u=https%, adapter=, skin=default_v2, tpl=wi, clientfrom=, client=, secstate=]
+			to
+			Map<key, value>
+				token,  39aa2r
+				u,      https%
+				adapter,
+				skin,
+				tpl,
+				clientfrom,
+				client,
+				secstate,
+		 */
+		if(a == null || a.length==0) return null;
+		if(StringUtils.isEmpty(string)) return null;
+
+		Map<String, String> c = new HashMap<String, String>();
+		for(String s : a) {
+			String[] b = s.split(string);
+			c.put(b[0], b.length>1?b[1]:null);
+		}
+		return c;
 	}
 
 }

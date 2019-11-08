@@ -142,6 +142,21 @@ public class OkHttpUtil_HTTP客户端工具 {
 		return json;
 	}
 
+	public String doGetWithJsonResult(String uri, Headers headers) throws IOException {
+		Request request = null;
+		if(headers == null){
+			request = new Request.Builder().url(uri).build();
+		}else{
+			request = new Request.Builder().url(uri).headers(headers).build();
+		}
+		Response response = client.newCall(request).execute();
+		if (!response.isSuccessful())
+			throw new IOException("Unexpected code " + response);
+
+		String json = null;
+		json = response.body().string();
+		return json;
+	}
 	/**
 	 * 发送get请求
 	 *
