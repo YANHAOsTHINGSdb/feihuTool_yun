@@ -121,10 +121,10 @@ function verify_login() {
 function printCookies(data) {
     document.getElementById('verifycode-wrapper').style.display = "none";
     $("#USERNAME").val($("#login-username").val());
-    $("#BDUSS").val(data.data.bduss);
-    $("#PTOKEN").val(data.data.ptoken);
-    $("#STOKEN").val(data.data.stoken);
-    $("#COOKIE").val(data.data.cookieString);
+    $("#BDUSS").val(data.bduss);
+    $("#PTOKEN").val(data.ptoken);
+    $("#STOKEN").val(data.stoken);
+    $("#COOKIE").val(data.cookieString);
 }
 
 function reborn(id) {

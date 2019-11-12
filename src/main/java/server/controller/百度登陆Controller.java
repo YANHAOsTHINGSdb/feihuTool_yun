@@ -88,7 +88,7 @@ public class 百度登陆Controller extends HttpServlet{
     	// 设置 密码
     	String token = r.getParameter("token");
 
-		return new BaiduHttpService百度服务器登陆服务().申请百度发送验证码到手机或邮箱(type, token);
+		return new BaiduHttpService百度服务器登陆服务().申请发送验证码到手机或邮箱(type, token);
 
     }
 
@@ -103,7 +103,7 @@ public class 百度登陆Controller extends HttpServlet{
 
     	String u = r.getParameter("u");
 
-    	String verifyType = r.getParameter("verifyType");
+    	String verifyType = r.getParameter("type");
 
 		return new BaiduHttpService百度服务器登陆服务().发送从手机或邮箱取到的验证码(vcode, token, u, verifyType);
 

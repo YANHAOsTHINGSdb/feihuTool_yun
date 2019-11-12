@@ -30,7 +30,50 @@ import server.pcs.util.StringUtil;
 import server.pcs.util.SystemUtil;
 
 /**
- *
+
+	        本地服务端							     百度服务器
+	------------------------------------------------------------------------
+
+	登陆百度网盘_byUserName_passwd --->
+
+								 <---    返回错误信息，及验证码图片地址
+
+	登陆百度网盘_byUserName_passwd_图片验证码_图片验证密码 --->
+
+							 	 <---    返回错误信息：需要手机/邮箱验证
+
+	请求验证用的手机或邮箱信息       --->
+
+							 	 <---    返回最新token及最新U（手机/邮箱验证码回收地址）
+
+	申请发送验证码到手机或邮箱       --->
+
+								 <---    返回操作信息：已经发送验证码
+
+	发送从手机或邮箱取到的验证码     --->
+
+	参考：https://github.com/iikira/Baidu-Login/
+	------------------------------------------------------------------------
+
+	花了一个礼拜时间研究某人(https://github.com/iikira/Baidu-Login/)
+	的百度登陆验证代码。
+	接近尾声，趁着记忆尚温留点笔记。
+
+	总结：为什么代码要开源？--为了方便别人抄袭
+	                      （无数次失败之后、你会发现读一读代码是最简单的
+	     为什么要抄袭      --代价最小
+	                      （无数次开发之后、你会发现。。。
+	     为什么要抄他的    --别人的都不好用
+	                      （无数次尝试之后、你会发现。。。
+	     怎么抄袭别人的代码 --把他的语言学会、再用你的语言写一遍
+	                      （无数次搜索之后、你会发现。。。
+	     为什么不能直接用   --登陆只是一个功能，
+	                      （其他业务不是这个语言写的，不能放一起
+	     技术水平如何提高？ --锁定需求，硬憋。
+	                      （要有需求和进度跟着，代码才有写完的可能
+	     什么开发语言最好？ --无所谓、能解决问题就行
+	                      （无数次被忽悠之后、你会发现。。。
+
  * @author haoyan
  *
  */
@@ -328,7 +371,7 @@ public class BaiduHttpService百度服务器登陆服务 {
 		return null;
 	}
 
-	public Map<String, String> 申请百度发送验证码到手机或邮箱(String type, String token) {
+	public Map<String, String> 申请发送验证码到手机或邮箱(String type, String token) {
 		/**
 			url := fmt.Sprintf("https://wappass.baidu.com/passport/authwidget?action=send&tpl=&type=%s&token=%s&from=&skin=&clientfrom=&adapter=2&updatessn=&bindToSmsLogin=&upsms=&finance=", verifyType, token)
 			body, err := bc.Fetch("GET", url, nil, nil)
@@ -435,14 +478,30 @@ public class BaiduHttpService百度服务器登陆服务 {
 		}
 
 		// 去除 body 的 callback 嵌套 "jsonp1(...)"
-		okHttpRes.replaceAll(okHttpRes, "jsonp1(");
-		okHttpRes.replaceAll(okHttpRes, ")");
+		/**
+			jsonp1({
+			    "errInfo":{
+			        "no": "110001",
+			        "msg": "参数错误"
+			    },
+			     "data": {
+			        "u": "https:\/\/wappass.baidu.com\/wp\/login\/proxy?u=https%3A%2F%2Fwappass.baidu.com%2F&tpl=wi&ltoken=6db91b0d6da665068313682293d5cc83&lstr=c827s3rYKkstcDkhWQSdxx7kAJfoU8wx2Y7cPguHh9BN3MK3RrA8bLR2WpY%2F%2FAIPLZWnTGIId%2BtOCp2%2FszTF&adapter=&skin=default_v2&clientfrom=&client=&actiontype=1&traceid=1AD17503",
+			        "authsid" : "",
+			    	"bindToSmsLogin": "",
+			        "secret": ""
+			    },
+			    "traceid": ""
+			}
+			)
+		 */
+		okHttpRes = okHttpRes.replace("jsonp1(", "");
+		okHttpRes = okHttpRes.replace(")", "");
 
 		// 如果 json 解析出错, 直接输出错误信息
 		JSONObject json = JSONObject.parseObject(okHttpRes);
-
+		JSONObject data = json.getJSONObject("data");
 		// 最后一步要访问的 URL
-		String finalurl = String.format("%s&authsid=%s&fromtype=%s&bindToSmsLogin=", u, json.get("authsid"), verifyType); // url
+		String finalurl = String.format("%s&authsid=%s&fromtype=%s&bindToSmsLogin=", data.get("u"), data.get("authsid"), verifyType); // url
 		// 向百度服务器请求
 		String okHttpRes2 = null;
 		try {
@@ -451,13 +510,14 @@ public class BaiduHttpService百度服务器登陆服务 {
 			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
 		}
+		//List<Cookie> cookieList= OkHttpUtil_HTTP客户端工具.getInstance().getCookie(HttpUrl.parse(finalurl));
+		//List<Cookie> cookies = OkHttpUtil_HTTP客户端工具.getCookie(HttpUrl.parse(finalurl));
 
-		parseCookies(u, okHttpRes2);
 
-		return null;
+		return parseCookies(finalurl, okHttpRes2);
 	}
 
-	private void parseCookies(String targetURL, String okHttpRes2) {
+	private Map parseCookies(String targetURL, String okHttpRes2) {
 		/**
 			func (lj *LoginJSON) parseCookies(targetURL string, jar *cookiejar.Jar) {
 				url, _ := url.Parse(targetURL)
@@ -475,21 +535,83 @@ public class BaiduHttpService百度服务器登陆服务 {
 				lj.Data.CookieString = pcsutil.GetURLCookieString(targetURL, jar) // 插入 cookie 字串
 			}
 		 */
-		List<Cookie> cookies = OkHttpUtil_HTTP客户端工具.getCookie(HttpUrl.parse(targetURL));
-		BaiduDto baiduDtoBranch = new BaiduDto();
-		for (int i = 0; i < cookies.size(); i++) {
-			Cookie cookie = cookies.get(i);
-			if (cookie.name().equals("BDUSS")) {
-				baiduDtoBranch.setBduss(cookie.value());
-			}
-			if (cookie.name().equals("PTOKEN")) {
-				baiduDtoBranch.setPtoken(cookie.value());
-			}
-			if (cookie.name().equals("STOKEN")) {
-				baiduDtoBranch.setStoken(cookie.value());
-			}
-		}
 
+		/**
+			<!DOCTYPE html>
+			<html>
+			<head>
+			<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+
+			</head>
+			<body>
+			<script type="text/javascript">
+
+			//如果是ios则通过window.webkit.messageHandlers与客户端交互，同步登录信息给客户端
+			var _ua = navigator.userAgent;
+			var _isiOS = !!_ua.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+
+			setTimeout(function () {
+			    //将返回值格式化为json
+				if(_isiOS && window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.h5LoginSucceed && window.webkit.messageHandlers.h5LoginSucceed.postMessage){
+					var _userName = "yhwzq1981",
+						_bdu = "xyNGllS0NpOHA4REc3RC1QNms4aVpYbm5WUlRnMVZzWjB3OEk3MTNycUJ6dTFkRUFBQUFBJCQAAAAAAAAAAAEAAADxbSINeWh3enExOTgxAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIFBxl2BQcZdTE",
+						_ptoken = "9ad4d4aec649c811f33f28ec1135d43c" ;
+
+					var _rspJson = {"userName":_userName,"bduss":_bdu,"ptoken":_ptoken};
+					window.webkit.messageHandlers.h5LoginSucceed.postMessage(_rspJson);
+				} else if (window.passUiWebLoginSucceed) {
+					var rspJson = {
+						'userName': 'yhwzq1981',
+						'bduss': 'xyNGllS0NpOHA4REc3RC1QNms4aVpYbm5WUlRnMVZzWjB3OEk3MTNycUJ6dTFkRUFBQUFBJCQAAAAAAAAAAAEAAADxbSINeWh3enExOTgxAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIFBxl2BQcZdTE',
+						'ptoken': '9ad4d4aec649c811f33f28ec1135d43c'
+					};
+					window.passUiWebLoginSucceed(rspJson);
+				};
+					var _u = "https://wappass.baidu.com/%3Fuid%3D1573273986215_521%26ssid%3D41e4fd4d42478d1f4def28c1f2a78475.3.1573273985.1.pXWXlPRpXWXl%26traceid%3D";
+				document.location = decodeURIComponent(_u);
+			}, 0);
+			</script>
+			</body>
+			</html>
+		 */
+		BaiduDto baiduDto = new BaiduDto();
+
+//		for (int i = 0; i < okHttpRes2.size(); i++) {
+//			Cookie cookie = okHttpRes2.get(i);
+//			if (cookie.name().equals("BDUSS")) {
+//				baiduDto.setBduss(cookie.value());
+//			}
+//			if (cookie.name().equals("PTOKEN")) {
+//				baiduDto.setPtoken(cookie.value());
+//			}
+//			if (cookie.name().equals("STOKEN")) {
+//				baiduDto.setStoken(cookie.value());
+//			}
+//
+		// 取得信息的指定位置
+		int i0 = StringUtils.indexOf(okHttpRes2, "'userName':");
+		int i1 = StringUtils.indexOf(okHttpRes2, "'bduss':");
+		int i2 = StringUtils.indexOf(okHttpRes2, "'ptoken':");
+
+		// 截取其中的Str信息
+		String a0 = StringUtils.substring(okHttpRes2, i0+"'userName':".length(), i1-2);
+		String a1 = StringUtils.substring(okHttpRes2, i1+"'bduss':".length(), i2-2);
+		int i3 = StringUtils.indexOf(okHttpRes2, "};", i2);
+		String a2 = StringUtils.substring(okHttpRes2, i2+"'ptoken': ".length(), i3-2);
+
+		// 清理取到的Str
+		String userName = StringUtil.清理取到的Str(a0);
+		String bduss = StringUtil.清理取到的Str(a1);
+		String ptoken = StringUtil.清理取到的Str(a2);
+
+		// 返回解析到的信息
+		Map m = new HashMap();
+		m.put("userName", userName);
+		m.put("bduss", bduss);
+		m.put("ptoken", ptoken);
+		m.put("errCode", "0");
+		return m;
 	}
 
 	/**
@@ -514,12 +636,71 @@ public class BaiduHttpService百度服务器登陆服务 {
 //		return result;
 //	}
 
-//	public static void main(String args[]) throws Exception {
+	public static void main(String args[]) throws Exception {
 //		String imgUrl = "https://wappass.baidu.com/cgi-bin/genimage?"
 //				+ "jxG7f07e2152b59c151020d15619801097b6120440615023110";
 //
 //		System.out.println(下载指定图片并解析_byUrl(imgUrl));
-//	}
+
+		String s ="			<!DOCTYPE html>\r\n" +
+				"			<html>\r\n" +
+				"			<head>\r\n" +
+				"			<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\r\n" +
+				"\r\n" +
+				"\r\n" +
+				"			</head>\r\n" +
+				"			<body>\r\n" +
+				"			<script type=\"text/javascript\">\r\n" +
+				"\r\n" +
+				"			//如果是ios则通过window.webkit.messageHandlers与客户端交互，同步登录信息给客户端\r\n" +
+				"			var _ua = navigator.userAgent;\r\n" +
+				"			var _isiOS = !!_ua.match(/\\(i[^;]+;( U;)? CPU.+Mac OS X/);\r\n" +
+				"\r\n" +
+				"			setTimeout(function () {\r\n" +
+				"			    //将返回值格式化为json\r\n" +
+				"				if(_isiOS && window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.h5LoginSucceed && window.webkit.messageHandlers.h5LoginSucceed.postMessage){\r\n" +
+				"					var _userName = \"yhwzq1981\",\r\n" +
+				"						_bdu = \"xyNGllS0NpOHA4REc3RC1QNms4aVpYbm5WUlRnMVZzWjB3OEk3MTNycUJ6dTFkRUFBQUFBJCQAAAAAAAAAAAEAAADxbSINeWh3enExOTgxAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIFBxl2BQcZdTE\",\r\n" +
+				"						_ptoken = \"9ad4d4aec649c811f33f28ec1135d43c\" ;\r\n" +
+				"\r\n" +
+				"					var _rspJson = {\"userName\":_userName,\"bduss\":_bdu,\"ptoken\":_ptoken};\r\n" +
+				"					window.webkit.messageHandlers.h5LoginSucceed.postMessage(_rspJson);\r\n" +
+				"				} else if (window.passUiWebLoginSucceed) {\r\n" +
+				"					var rspJson = {\r\n" +
+				"						'userName': 'yhwzq1981',\r\n" +
+				"						'bduss': 'xyNGllS0NpOHA4REc3RC1QNms4aVpYbm5WUlRnMVZzWjB3OEk3MTNycUJ6dTFkRUFBQUFBJCQAAAAAAAAAAAEAAADxbSINeWh3enExOTgxAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIFBxl2BQcZdTE',\r\n" +
+				"						'ptoken': '9ad4d4aec649c811f33f28ec1135d43c'\r\n" +
+				"					};\r\n" +
+				"					window.passUiWebLoginSucceed(rspJson);\r\n" +
+				"				};\r\n" +
+				"					var _u = \"https://wappass.baidu.com/%3Fuid%3D1573273986215_521%26ssid%3D41e4fd4d42478d1f4def28c1f2a78475.3.1573273985.1.pXWXlPRpXWXl%26traceid%3D\";\r\n" +
+				"				document.location = decodeURIComponent(_u);\r\n" +
+				"			}, 0);\r\n" +
+				"			</script>\r\n" +
+				"			</body>\r\n" +
+				"			</html>";
+//		ArrayList<String> matchList_TokenAndU =  StringUtil.解析指定️字符串_by正则表达式(s,
+//				"setTimeout(function () (.*?), 0);\\r\\n\"");
+		int i0 = StringUtils.indexOf(s, "'userName':");
+		int i1 = StringUtils.indexOf(s, "'bduss':");
+		int i2 = StringUtils.indexOf(s, "'ptoken':");
+
+		String a0 = StringUtils.substring(s, i0+"'userName':".length(), i1-2);
+		String a1 = StringUtils.substring(s, i1+"'bduss':".length(), i2-2);
+		int i3 = StringUtils.indexOf(s, "};", i2);
+		String a2 = StringUtils.substring(s, i2+"'ptoken': ".length(), i3-2);
+
+		String userName = StringUtil.清理取到的Str(a0);
+		String bduss = StringUtil.清理取到的Str(a1);
+		String ptoken = StringUtil.清理取到的Str(a2);
+
+		BaiduDto baiduDtoBranch = new BaiduDto();
+
+		baiduDtoBranch.setBduss(bduss);
+		baiduDtoBranch.setPtoken(ptoken);
+		//baiduDtoBranch.setStoken(cookie.value());
+
+	}
 
 //	public static void set百度用户信息(BaiduDto baidu) {
 //		try {

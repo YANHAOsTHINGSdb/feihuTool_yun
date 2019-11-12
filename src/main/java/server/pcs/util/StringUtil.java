@@ -235,5 +235,39 @@ public class StringUtil {
 		}
 		return c;
 	}
+	/**
+	 * 将字符串中的"\n"换成"\b"
+	 * @param l
+	 * @return
+	 * 问题：Java /n 无法替换
+	 * 方法一（无效
+	 *   在去除字符串中的换行符(\n)的时候，写成str.replace("\\n", "")才能正确执行。
+	 *   str.replace("\n","") ，str.replaceAll("\\n","")，str.replaceAll("\n","")均替换失败。
+	 * 方法二（无效
+	 *   java str replace /n
+	 * 方法三（有效
+	 *   自己写函数解决
+	 *   \n是换行，ASCLL码是10
+	 */
+	public static String 替换指定Str换行符(String l, char fromChar, char toChar) {
+		char[] s = l.toCharArray();
+		int iIndex = 0;
+		for(char a : s) {
+			if(a == fromChar) {
+				System.out.println(a);
+				s[iIndex] = toChar;
+			}
+			iIndex++;
+		}
+		return new String(s);
+	}
 
+	public static String 清理取到的Str(String a1) {
+		a1 = StringUtil.替换指定Str换行符(a1, '\t', ' ');
+		a1 = StringUtil.替换指定Str换行符(a1, '\r', ' ');
+		a1 = StringUtil.替换指定Str换行符(a1, '\'', ' ');
+		a1 = a1.replace(",", "");
+		a1 = a1.trim();
+		return a1;
+	}
 }
