@@ -1,0 +1,7 @@
+bduss=
+name=
+ptoken=
+stoken=
+workdir=
+uid=
+nameshow=
