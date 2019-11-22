@@ -18,12 +18,34 @@
 
 <script type="text/javascript" src="js/tabulator.min.js"></script>
 <script type="text/javascript" src="js/tabulator.js"></script>
+<script type="module" src="js/js.cookie.mjs"></script>
 <title>飞狐数据</title>
 
 </head>
 <body>
+
 	<script>
 
+	getCookies(){
+
+		//  参照 https://github.com/js-cookie/js-cookie
+		var bduss = Cookies.get('bduss');
+		var name = Cookies.get('name');
+		var ptoken = Cookies.get('ptoken');
+		var stoken = Cookies.get('stoken');
+		var workdir = Cookies.get('workdir');
+		var uid = Cookies.get('uid');
+		var nameshow = Cookies.get('nameshow');
+
+		if(bduss===undefined){
+			// 1、如果没有取到bduss信息
+			//    就进行显示百度登陆画面
+			$("#baidu_login").css("display", "none");
+		} else{
+			$("#baidu_login_finished").css("display", "none");
+		}
+
+	}
 		$(function() {
 			$("#chuquan_download_btn").click(function() {
 			    $("#fbean").attr("action","chuquan_download");
@@ -40,7 +62,7 @@
 				// http://www.baidu.com/cache/user/html/login-1.2.html
 				// https://passport.baidu.com/v2/?login&Type=1&tpl=netdisk
 				// https://wappass.baidu.com/cgi-bin/genimage?tcG4a345670d4ed560a024d1544a901cc13239f973474012d7b
-				url		: "http://localhost:8080/feihuTool/baiduLogin"),
+				url		: "http://localhost:8080/feihuTool/baiduLogin",
 
 				// serialize()=输出序列化表单值的结果、参照https://www.w3school.com.cn/jquery/ajax_serialize.asp
 				type    :'get',
@@ -143,7 +165,15 @@
 			</div>
 		</div>
 		<!-- 这里是子画面-->
-		<div id="subPage"></div>
+		<div id="baidu_login" style="display:none;">
+			<jsp:include page="百度BDUSS.jsp" />
+		</div>
+		<!-- 成功 -->
+		<div id="baidu_login_finished"  class="panel panel-succeed" style="display:none;">
+            <div class="panel-heading">
+                <h3 class="panel-title">百度网盘登录成功</h3>
+            </div>
+		</div>
 		<form id ="fbean" name="fbean" method="post">
 		</form>
 		</main>
