@@ -27,7 +27,7 @@
             </h1>
             <br/>
             <br/>
-            <a href="https://github.com/iikira/Baidu-Login" target="_blank">查看帮助</a>
+            <!-- <a href="https://github.com/iikira/Baidu-Login" target="_blank">查看帮助</a> -->
         </div>
     </header>
 
@@ -201,8 +201,10 @@
         </div>
     </div>
 
-    <footer id="footer">Copyright © 2017 - 2018,
-        <a href="https://github.com/iikira/Baidu-Login" target="_blank">iikira/Baidu-Login</a>.</footer>
+    <footer id="footer">
+<!--     	Copyright © 2017 - 2018,
+        <a href="https://github.com/iikira/Baidu-Login" target="_blank">iikira/Baidu-Login</a>. -->
+    </footer>
 
     <script>
         new Clipboard('.btn');
